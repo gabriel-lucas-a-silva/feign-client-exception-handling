@@ -7,10 +7,8 @@ feign:
   client:
 #    default-to-properties: false
     config:
-      stores:
-        errorDecoder: com.codemore.FeignClientExceptionHandling.controllers.SimpleErrorDecoder
-      myclient:
-        errorDecoder: com.codemore.FeignClientExceptionHandling.client.exceptions.MyClientErrorDecoder
+      claro-client:
+        errorDecoder: com.codemore.FeignClientExceptionHandling.clients.ClaroClientErrorDecoder
   circuitbreaker:
     enabled: true
     group:

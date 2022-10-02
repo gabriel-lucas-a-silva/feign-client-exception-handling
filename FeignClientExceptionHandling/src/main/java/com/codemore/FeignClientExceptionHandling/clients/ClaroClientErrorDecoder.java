@@ -1,4 +1,4 @@
-package com.codemore.FeignClientExceptionHandling.client.exceptions;
+package com.codemore.FeignClientExceptionHandling.clients;
 
 import com.codemore.FeignClientExceptionHandling.exceptions.BillNotCreatedException;
 import com.codemore.FeignClientExceptionHandling.exceptions.CompanyNotFoundException;
@@ -8,38 +8,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 @Slf4j
-@Component
-public class CustomErrorDecoder implements ErrorDecoder {
-    private final ErrorDecoder errorDecoder = new Default();
+public class ClaroClientErrorDecoder implements ErrorDecoder {
+    private final ErrorDecoder decoder = new Default();
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public Exception decode(String s, Response response) {
-        ExceptionMessage message = null;
+        ExceptionMessage exceptionMessage = null;
 
         try (InputStream body = response.body().asInputStream()) {
-            message = mapper.readValue(body, ExceptionMessage.class);
+            exceptionMessage = mapper.readValue(body, ExceptionMessage.class);
         } catch (IOException e) {
-            log.error("ERROR decode. Couldn't read response body. message: {}", e.getMessage());
-            return new Exception(e.getMessage());
+            log.error("ERROR decode. Couldn't read claro response body as ExceptionMessage. exception message: {}",
+                    e.getMessage());
+            return decoder.decode(s, response);
         }
 
         switch (response.status()) {
             case 404:
-                return new CompanyNotFoundException(message.getMessage());
+                return new CompanyNotFoundException(exceptionMessage.getMessage());
             case 422:
-                ClaroErrorResponseDto claroErrorResponseDto = new ClaroErrorResponseDto(message.getCode(),
-                        message.getMessage(), "");
-                return new BillNotCreatedException(claroErrorResponseDto);
+                ClaroErrorResponseDto errorResponse = new ClaroErrorResponseDto(exceptionMessage.getCode(),
+                        exceptionMessage.getMessage(), "");
+                return new BillNotCreatedException(errorResponse);
             default:
-                return errorDecoder.decode(s, response);
+                return decoder.decode(s, response);
         }
     }
 }
-
