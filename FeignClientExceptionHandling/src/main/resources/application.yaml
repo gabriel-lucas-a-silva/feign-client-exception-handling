@@ -1,0 +1,17 @@
+server:
+  name: feign-client-exception-handling
+  port: 8080
+  shutdown: graceful
+
+feign:
+  hystrix:
+    enabled: true
+  circuitbreaker:
+    enabled: true
+    group:
+      enabled: true
+claro:
+  name: ${CLARO_CLIENT_NAME:claro}
+  standard.url: ${CLARO_URL:http://localhost:3333}
+  biller.consult.url: ${BILLER_CONSULT_PATH:/biller/consult}
+
