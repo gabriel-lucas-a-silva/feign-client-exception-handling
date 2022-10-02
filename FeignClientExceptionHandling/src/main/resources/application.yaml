@@ -4,12 +4,18 @@ server:
   shutdown: graceful
 
 feign:
-  hystrix:
-    enabled: true
+  client:
+#    default-to-properties: false
+    config:
+      stores:
+        errorDecoder: com.codemore.FeignClientExceptionHandling.controllers.SimpleErrorDecoder
+      myclient:
+        errorDecoder: com.codemore.FeignClientExceptionHandling.client.exceptions.MyClientErrorDecoder
   circuitbreaker:
     enabled: true
     group:
       enabled: true
+
 claro:
   name: ${CLARO_CLIENT_NAME:claro}
   standard.url: ${CLARO_URL:http://localhost:3333}

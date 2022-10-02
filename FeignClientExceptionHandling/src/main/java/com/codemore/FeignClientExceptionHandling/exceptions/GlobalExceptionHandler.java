@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler
+    @ExceptionHandler(CompanyNotFoundException.class)
     public ResponseEntity<ClaroErrorResponseDto> handleCompanyNotFoundException(CompanyNotFoundException e) {
         log.error("ERROR handleCompanyNotFoundException. message: {}", e.getMessage());
         ClaroErrorResponseDto response = new ClaroErrorResponseDto("1", e.getMessage(), "");
