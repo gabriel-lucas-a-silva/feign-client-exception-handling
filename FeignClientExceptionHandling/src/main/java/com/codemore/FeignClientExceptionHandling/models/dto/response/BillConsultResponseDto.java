@@ -15,4 +15,13 @@ public class BillConsultResponseDto {
     private String billAmountCurrency;
     private BigDecimal paymentTransactionFee;
     private BigDecimal paymentTotalUsd;
+
+    public static BillerResponseDto convertToBillerResponseDto(BillConsultResponseDto responseDto) {
+        return BillerResponseDto.builder()
+                .billerId(responseDto.getBillerId())
+                .accountNumber(responseDto.getAccountNumber())
+                .currency(responseDto.getBillAmountCurrency())
+                .billerAmount(responseDto.getBillAmount())
+                .build();
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import static com.codemore.FeignClientExceptionHandling.helpers.BillerHelpers.createBillRequestDto;
 import static com.codemore.FeignClientExceptionHandling.helpers.LogHelpers.getJsonOf;
+import static com.codemore.FeignClientExceptionHandling.models.dto.response.BillConsultResponseDto.convertToBillerResponseDto;
 
 @Slf4j
 @Service
@@ -26,14 +27,5 @@ public class BillerService {
 
         log.info("SUCCESS calling claro client consult bill. response: {}", getJsonOf(responseDto));
         return convertToBillerResponseDto(responseDto);
-    }
-
-    private BillerResponseDto convertToBillerResponseDto(BillConsultResponseDto responseDto) {
-        return BillerResponseDto.builder()
-                .billerId(responseDto.getBillerId())
-                .accountNumber(responseDto.getAccountNumber())
-                .currency(responseDto.getBillAmountCurrency())
-                .billerAmount(responseDto.getBillAmount())
-                .build();
     }
 }
