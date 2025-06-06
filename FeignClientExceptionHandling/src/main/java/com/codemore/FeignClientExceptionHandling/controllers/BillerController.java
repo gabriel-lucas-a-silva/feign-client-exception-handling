@@ -22,7 +22,7 @@ public class BillerController {
 
     @GetMapping(value = "/consult/{billerId}")
     public ResponseEntity<?> consultBill(@PathVariable String billerId) {
-        log.info("INIT consulBill. biller id: [{}]", billerId);
+        log.info("INIT consultBill. biller id: [{}]", billerId);
         BillerResponseDto response = billerService.consultBill(billerId);
 
         log.info("SUCCESS consultBill. response: {}", getJsonOf(response));
