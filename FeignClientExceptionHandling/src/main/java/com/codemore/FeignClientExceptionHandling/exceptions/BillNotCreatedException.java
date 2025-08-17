@@ -10,6 +10,7 @@ public class BillNotCreatedException extends RuntimeException {
     private ClaroErrorResponseDto claroErrorResponseDto;
 
     public BillNotCreatedException(ClaroErrorResponseDto claroErrorResponseDto) {
+        super(claroErrorResponseDto.getMessage());
         this.claroErrorResponseDto = claroErrorResponseDto;
     }
 }
